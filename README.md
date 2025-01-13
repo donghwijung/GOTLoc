@@ -17,6 +17,11 @@ However, skipping the extraction step makes the speed of the process much slower
 conda env create -f environment.yml
 conda activate GOTLoc
 ```
+### Install the NLTK
+Install the trained pipeline for *word2vec* embeddings
+```bash
+python -m spacy download en_core_web_lg
+```
 ### Setup directories
 ```bash
 bash setup_directories.sh
@@ -25,10 +30,10 @@ bash setup_directories.sh
 ## Dataset
 ### Download
 <!-- - [Download]() KITTI360pose dataset -->
-- [Download]() download scene graphs and model checkpoints
+- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) download scene graphs and model checkpoints
 - Place the downloaded datasets to the *data* directory
 - Unzip the downloaded dataset
-### Data processing
+<!-- ### Data processing
 Generate an OSM scene graph
 ```bash
 python generate_osm_scene_graph.py
@@ -37,19 +42,17 @@ python generate_osm_scene_graph.py
 Generate a text scene graph
 ```bash
 python generate_text_scene_graph.py
-# ex) python .py --data_id 3
+# ex) python .py --data_id 3 -->
 ```
 
 ## Train
 ```bash
 python train.py
-# ex) python train.py --data_path data
 ```
 
 ## Evaluation
 ```bash
 python eval.py
-# ex) python eval.py --data_path data
 ```
 
 ## Citation
