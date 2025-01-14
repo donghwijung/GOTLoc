@@ -33,13 +33,13 @@ bash setup_directories.sh
 - Unzip the downloaded data.
 
 ## Train
-You can modify the training arguments, which are specified in the `config.py` file.
+To modify the training arguments, please the `config.py` file.
 ```bash
 python train.py
 ```
 
 ## Evaluation
-To modify the evaluation arguments, please consult the `config.py`. file. Additionally, if you have not installed vectorDB (Milvus) as outlined in [Install the vectorDB (Milvus)](#Install-the-vectorDB-(Milvus)), set this value to *False*.
+To modify the evaluation arguments, please consult the `config.py`. file. Additionally, if you have not installed vectorDB (Milvus) as outlined in [Install the vectorDB (Milvus)](#install-the-vectordb-milvus), set this value to *False*.
 ```bash
 python eval.py
 ```
