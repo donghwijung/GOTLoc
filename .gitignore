@@ -1,7 +1,6 @@
 __pycache__
 
 data/*
-results/*
 wandb/*
 
 *.db

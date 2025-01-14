@@ -2,15 +2,13 @@
 data_path = "./data"
 scene_graphs_path = f"{data_path}/scene_graphs"
 model_checkpoints_path = f"{data_path}/model_checkpoints"
-results_path = "./results"
 
-cell_graphs_file_name = "osm_cell_graphs_0000_0002_0003_0004_0005_0006_0007_0009_0010_5225_300.pkl"
-train_text_graphs_file_name = "osm_train_text_graphs_0000_6625_300.pkl"
-val_text_graphs_file_name = "osm_val_text_graphs_0010_2671_300.pkl"
-test_text_graphs_file_name = "osm_test_text_graphs_0003_653_300.pkl"
+cell_graphs_file_name = "osm_cell_graphs_5225.pkl"
+train_text_graphs_file_name = "osm_train_text_graphs_20648.pkl"
+val_text_graphs_file_name = "osm_val_text_graphs_2671.pkl"
+test_text_graphs_file_name = "osm_test_text_graphs_9205.pkl"
 
-
-model_name = "model_osm_transformer_whole_data" ## the name of the model checkpoints
+model_name = "model_osm" ## the name of the model checkpoints
 top_ks_list = [1,3,5]
 word2vec_dim = 300
 
@@ -40,6 +38,10 @@ heads = 2 ## The number of multi-head-attentions for graph transformers
 
 use_wandb = True ## Whether to use the wandb or not during training
 
-# eval
+# Evaluation
 result_save_epoch = 50
 use_candidates_extraction = True ## Please set this value as False, if you didn't install vectorDB (Milvus).
+
+# Visualization
+visualization_graphs_file_name = cell_graphs_file_name
+visualization_graph_index = 30

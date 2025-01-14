@@ -28,7 +28,7 @@ class BigGNN(nn.Module):
         self.GCALayers = nn.ModuleList([SimpleTConv(in_n, in_e, out_n, heads) for _ in range(N)])
 
         self.SceneText_MLP = nn.Sequential(
-            nn.Linear(300*2, 600), # TODO: input dimension is hardcoded now
+            nn.Linear(300*2, 600),
             nn.LeakyReLU(),
             nn.Linear(600, 300),
             nn.LeakyReLU(),
@@ -41,15 +41,11 @@ class BigGNN(nn.Module):
                       edge_attr_1, edge_attr_2, device="cuda"):
         
         for i in range(self.N):
-            ############# Self Attention #############
+            # Self attention
             x_1 = self.TSALayers[i](x_1, edge_idx_1, edge_attr_1)
             x_2 = self.GSALayers[i](x_2, edge_idx_2, edge_attr_2)
-            ############# Self Attention #############
-            # x_1_pooled = torch.mean(x_1, dim=0)
-            # x_2_pooled = torch.mean(x_2, dim=0)
-            # return x_1_pooled, x_2_pooled, torch.tensor(0.5)
-
-            ############# Cross Attention #############
+            
+            # Cross attention
             len_x_1 = x_1.shape[0]
             len_x_2 = x_2.shape[0]
             edge_index_1_cross, edge_attr_1_cross = make_cross_graph(x_1.shape, x_2.shape) # First half of x_1_cross should be the original x_1
@@ -58,13 +54,10 @@ class BigGNN(nn.Module):
             x_2_cross = torch.cat((x_2, x_1), dim=0)
             x_1_cross = self.TCALayers[i](x_1_cross.to(device), edge_index_1_cross.to(device), edge_attr_1_cross.to(device))
             x_2_cross = self.GCALayers[i](x_2_cross.to(device), edge_index_2_cross.to(device), edge_attr_2_cross.to(device))
-            x_1 = x_1_cross[:len_x_1] # TODO: Oh, this could be weird....... need to make sure the nodes and indices line up here
+            x_1 = x_1_cross[:len_x_1]
             x_2 = x_2_cross[:len_x_2]
-            ############# Cross Attention #############
-            # x_1 = F.normalize(x_1, p=2, dim=1)
-            # x_2 = F.normalize(x_2, p=2, dim=1)
         
-        # mean pooling
+        # Mean pooling
         x_1_pooled = torch.mean(x_1, dim=0)
         x_2_pooled = torch.mean(x_2, dim=0)
 

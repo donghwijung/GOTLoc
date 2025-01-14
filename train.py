@@ -24,10 +24,7 @@ def train(optimizer, database_3dssg, dataset, batch_size, fold):
     indices = [i for i in range(len(dataset))]
     random.shuffle(indices)
     train_loss = 0
-    # if (config.contrastive_loss):
-    batched_indices = [indices[i:i+batch_size] for i in range(0, len(indices) - batch_size, batch_size)] # TODO: Check the indexing is okay here, 
-                                                                                                            # but for now should be fine we just skip a 
-                                                                                                            # few graphs towards the end
+    batched_indices = [indices[i:i+batch_size] for i in range(0, len(indices) - batch_size, batch_size)]
     assert(len(batched_indices[0]) == batch_size)
     skipped = 0
     total = 0
@@ -53,7 +50,7 @@ def train(optimizer, database_3dssg, dataset, batch_size, fold):
                 x_p, p_p, m_p = model(torch.tensor(np.array(x_node_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_node_ft), dtype=torch.float32).to('cuda'),
                                         torch.tensor(x_edge_idx, dtype=torch.int64).to('cuda'), torch.tensor(p_edge_idx, dtype=torch.int64).to('cuda'),
                                         torch.tensor(np.array(x_edge_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_edge_ft), dtype=torch.float32).to('cuda'))
-                x_node_ft, x_edge_idx, x_edge_ft = None, None, None # TODO: do we need to remove from cuda to free space?
+                x_node_ft, x_edge_idx, x_edge_ft = None, None, None
 
                 loss1[i][j] = 1 - F.cosine_similarity(x_p, p_p, dim=0) # [0, 2] 0 is good
                 loss1[j][i] = loss1[i][j]
@@ -90,8 +87,7 @@ def eval_loss(database_3dssg, dataset, fold):
         assert(type(dataset) == list)
         indices = [i for i in range(len(dataset))]
         random.shuffle(indices)
-        # if (config.contrastive_loss):
-        batched_indices = [indices[i:i+config.batch_size] for i in range(0, len(indices) - config.batch_size, config.batch_size)] # TODO: Check the indexing is okay here, but for now should be fine we just skip a few graphs
+        batched_indices = [indices[i:i+config.batch_size] for i in range(0, len(indices) - config.batch_size, config.batch_size)]
         assert(len(batched_indices[0]) == config.batch_size)
         print(f'number of batches in evaluation: {len(batched_indices)}')
         skipped = 0
@@ -160,12 +156,6 @@ def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=c
         if g.scene_id not in buckets: buckets[g.scene_id] = []
         buckets[g.scene_id].append(idx)
 
-    # if config.eval_entire_dataset:
-    #     out_of = len(buckets)
-    #     valid_top_k = [1, 5, 10, 20, 30, 40]
-    #     if mode == 'human' or mode == 'human_test':
-    #         valid_top_k.extend([50, 75])
-
     # out_of is basically 10
     all_valid = {}
     for _ in range(config.eval_iters):
@@ -228,7 +218,7 @@ def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=c
                     timer.text2graph_matching_iter.append(1)
                 match_prob = match_prob[sorted_indices]
                 true_match = true_match[sorted_indices]
-            else: # use matching probability only, TODO: might change this to some sort of average...
+            else: # use matching probability only
                 # sort w indices
                 match_prob = np.array(match_prob)
                 true_match = np.array(true_match)
@@ -357,10 +347,8 @@ if __name__ == '__main__':
     train_text_graphs = list(train_text_graphs.values()) # NOTE
     training_set_size = len(train_text_graphs)
 
-    # if config.training_with_cross_val:
     if config.continue_training: 
         model = BigGNN(config.N, config.heads).to('cuda')
-        # model = BigGNNMamba(config.N, config.heads).to('cuda')
         model_dict = torch.load(f'{config.model_checkpoints_path}/{config.continue_training_model}.pt')
         model.load_state_dict(model_dict)
     else: model = BigGNN(config.N, config.heads).to('cuda')
@@ -381,9 +369,6 @@ if __name__ == '__main__':
     t_start = time.perf_counter()
     # Final test sets evaluation
     test_accuracy = eval_acc(
-                                        # model=model,
-                                        # database_3dssg=_3dssg_graphs,
-                                        # dataset=list(scanscribe_graphs_test.values()),
                                         database_3dssg=cell_graphs,
                                         dataset=list(val_text_graphs.values()),
                                         fold=None,

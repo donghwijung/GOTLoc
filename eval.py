@@ -46,14 +46,6 @@ def eval(model, text_graphs, cell_graphs, cell_graph_keys, top_ks_list):
             sorted_top_k_cell_ids, x_node_ft, x_edge_idx, x_edge_ft = proceed_candidates_extraction(model, cell_graphs, query_subgraph)
             for cell_graph_key in sorted_top_k_cell_ids:
                 db_subgraph = cell_graphs[cell_graph_key]
-
-                # p_node_ft, p_edge_idx, p_edge_ft = db_subgraph.to_pyg()
-
-                # x_p, p_p, m_p = model(torch.tensor(np.array(x_node_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_node_ft), dtype=torch.float32).to('cuda'),
-                #                         torch.tensor(x_edge_idx, dtype=torch.int64).to('cuda'), torch.tensor(p_edge_idx, dtype=torch.int64).to('cuda'),
-                #                         torch.tensor(np.array(x_edge_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_edge_ft), dtype=torch.float32).to('cuda'))
-
-                # cos_sim = (1 - F.cosine_similarity(x_p, p_p, dim=0)).item()
                 cos_sim = cal_cossim(model, db_subgraph, x_node_ft, x_edge_idx, x_edge_ft)
                 cos_sims.append(cos_sim)
             cos_sims = np.array(cos_sims)
@@ -72,13 +64,6 @@ def eval(model, text_graphs, cell_graphs, cell_graph_keys, top_ks_list):
         
             for db in cell_graphs.values():
                 db_subgraph = db
-                # p_node_ft, p_edge_idx, p_edge_ft = db_subgraph.to_pyg()
-
-                # x_p, p_p, m_p = model(torch.tensor(np.array(x_node_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_node_ft), dtype=torch.float32).to('cuda'),
-                #                         torch.tensor(x_edge_idx, dtype=torch.int64).to('cuda'), torch.tensor(p_edge_idx, dtype=torch.int64).to('cuda'),
-                #                         torch.tensor(np.array(x_edge_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_edge_ft), dtype=torch.float32).to('cuda'))
-
-                # cos_sim = (1 - F.cosine_similarity(x_p, p_p, dim=0)).item()
                 cos_sim = cal_cossim(model, db_subgraph, x_node_ft, x_edge_idx, x_edge_ft)
                 cos_sims.append(cos_sim)
             cos_sims = np.array(cos_sims)
@@ -130,16 +115,6 @@ if __name__ == '__main__':
             del cell_graphs_copy[k]
     cell_graph_keys = list(cell_graphs_copy.keys())
     accuracy, cos_sims_dict = eval(model, val_text_graphs, cell_graphs_copy, cell_graph_keys, config.top_ks_list)
-    # with open(f"{config.results_path}/result_val.pkl", "wb") as f:
-    #     pickle.dump(
-    #         {
-    #             "accuracy": accuracy,
-    #             "cos_sims_dict": cos_sims_dict,
-    #             "cell_graph_keys": cell_graph_keys,
-    #             "config.top_ks_list": config.top_ks_list
-    #         }, f
-    #     )
-
     recalls = [0] * len(config.top_ks_list)
     for k,v in accuracy.items():
         for acc_i, acc in enumerate(v):
@@ -163,19 +138,7 @@ if __name__ == '__main__':
         if seq_name not in test_scene_ids:
             del cell_graphs_copy[k]
     cell_graph_keys = list(cell_graphs_copy.keys())
-    # print(len(test_text_graphs))
     accuracy, cos_sims_dict = eval(model, test_text_graphs, cell_graphs_copy, cell_graph_keys, config.top_ks_list)
-    # print(accuracy)
-    # with open(f"{config.results_path}/result_test.pkl", "wb") as f:
-    #     pickle.dump(
-    #         {
-    #             "accuracy": accuracy,
-    #             "cos_sims_dict": cos_sims_dict,
-    #             "cell_graph_keys": cell_graph_keys,
-    #             "config.top_ks_list": config.top_ks_list
-    #         }, f
-    #     )
-
     recalls = [0] * len(config.top_ks_list)
     for k,v in accuracy.items():
         for acc_i, acc in enumerate(v):

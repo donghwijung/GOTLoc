@@ -22,13 +22,13 @@ def make_cross_graph(x_1_dim, x_2_dim):
         for j in range(x_2_dim):
             edge_index_cross = torch.cat((edge_index_cross, torch.tensor([[i], [x_1_dim + j]], dtype=torch.long)), dim=1)
             # Add edge_attr which is dimension 1x300, all 0
-            edge_attr_cross = torch.cat((edge_attr_cross, torch.zeros((1, 300), dtype=torch.float)), dim=0) # TODO: dimension 300
+            edge_attr_cross = torch.cat((edge_attr_cross, torch.zeros((1, 300), dtype=torch.float)), dim=0)
 
     assert(edge_index_cross.shape[1] == x_1_dim * x_2_dim)
     assert(edge_attr_cross.shape[0] == x_1_dim * x_2_dim)
     return edge_index_cross, edge_attr_cross
 
-def cross_entropy(preds, targets, reduction='none', dim=-1): # TODO: This could be why the loss never goes above 1
+def cross_entropy(preds, targets, reduction='none', dim=-1):
     log_softmax = torch.nn.LogSoftmax(dim=dim) 
     loss = (-targets * log_softmax(preds)).sum(1)
     assert(all(loss >= 0))

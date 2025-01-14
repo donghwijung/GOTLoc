@@ -29,30 +29,26 @@ bash setup_directories.sh
 
 ## Dataset
 ### Download
-<!-- - [Download]() KITTI360pose dataset -->
 - [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) download scene graphs and model checkpoints
 - Place the downloaded datasets to the *data* directory
 - Unzip the downloaded dataset
-<!-- ### Data processing
-Generate an OSM scene graph
-```bash
-python generate_osm_scene_graph.py
-# ex) python .py --data_id 3
-```
-Generate a text scene graph
-```bash
-python generate_text_scene_graph.py
-# ex) python .py --data_id 3
-``` -->
 
 ## Train
+You may change the arguments for the training. The arguments are defined in the `config.py`.
 ```bash
 python train.py
 ```
 
 ## Evaluation
+To change the arguments, please refer to the `config.py`. if you didn't install vectorDB (Milvus) as described in [Install the vectorDB (Milvus)](#Install-the-vectorDB-(Milvus)), please seet this value as *False*.
 ```bash
 python eval.py
+```
+
+## Visualization
+To change the visualization target, please refer to the *visualization_graphs_file_name* and *visualization_graph_index* in the `config.py`.
+```bash
+python visualize_graph.py
 ```
 
 ## Citation
