@@ -16,7 +16,7 @@ def proceed_candidates_extraction(model, cell_graphs, text_graph, candidates_cnt
     cell_embedding_data_list = []
     data = []
     random_cell_graph_keys = list(cell_graphs.keys())
-    for rcgk_i, rcgk in tqdm(enumerate(random_cell_graph_keys)):
+    for rcgk_i, rcgk in enumerate(random_cell_graph_keys):
         p_node_ft, p_edge_idx, p_edge_ft = cell_graphs[rcgk].to_pyg()
 
         cell_embedding = model.TSALayers[0](torch.tensor(np.array(p_node_ft), dtype=torch.float32).to('cuda'),

@@ -42,8 +42,8 @@ python generate_osm_scene_graph.py
 Generate a text scene graph
 ```bash
 python generate_text_scene_graph.py
-# ex) python .py --data_id 3 -->
-```
+# ex) python .py --data_id 3
+``` -->
 
 ## Train
 ```bash
