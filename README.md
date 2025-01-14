@@ -4,15 +4,7 @@
 ## Description
 This is an implentation of *"GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap"* which indicates a general outdoor text-based localization using scene graph retrieval with OpenStreetMap.
 
-## Prerequisite
-### Install the vectorDB (Milvus)
-<!-- For the scene graph candidates extraction, the vectorDB is necessary.
-To install the vectorDB. Follow the instruction [link](https://github.com/milvus-io/milvus).
-If you can't install the vectorDB for any reasons. Skip the process and proceed the codes without candidates extraction step.
-However, skipping the extraction step makes the speed of the process much slower. -->
-The vectorDB is required for extracting scene graph candidates. To install it, follow the instructions at this [link](https://github.com/milvus-io/milvus). If you're unable to install the vectorDB for any reason, you can skip this step and continue with the code without the candidate extraction. However, skipping this step will significantly slow down the process.
-
-## Installation
+## Setup
 ### Setting an environments
 ```bash
 conda env create -f environment.yml
@@ -21,7 +13,13 @@ conda activate GOTLoc
 ### Install the NLTK
 Install the trained pipeline for *word2vec* embeddings.
 ```bash
+pip install spacy
 python -m spacy download en_core_web_lg
+```
+### Install the vectorDB (Milvus)
+The vectorDB is required for extracting scene graph candidates. To install it, follow the command below or instructions at [link](https://github.com/milvus-io/milvus). If you're unable to install the vectorDB for any reason, you can skip this step and continue with the code without the candidate extraction. However, skipping this step will significantly slow down the process.
+```bash
+pip install -U pymilvus
 ```
 ### Setup directories
 ```bash

@@ -43,7 +43,6 @@ dependencies:
       - cycler==0.12.1
       - cymem==2.0.10
       - docker-pycreds==0.4.0
-      - en-core-web-lg==3.8.0
       - filelock==3.16.1
       - fiona==1.10.1
       - fonttools==4.55.3
@@ -94,7 +93,6 @@ dependencies:
       - pydantic==2.10.4
       - pydantic-core==2.27.2
       - pygments==2.18.0
-      - pymilvus==2.5.3
       - pyogrio==0.10.0
       - pyparsing==3.2.0
       - pyproj==3.7.0

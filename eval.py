@@ -10,11 +10,10 @@ import numpy as np
 
 import config
 from models import BigGNN
-from scene_graph_candidates_extraction import proceed_candidates_extraction
+from scene_graph_candidates_extraction import proceed_candidates_extraction, setup_db
 
 torch.cuda.empty_cache()
 device = "cuda" if torch.cuda.is_available() else "cpu"
-print(torch.cuda.current_device())
 
 random.seed(42)
 
@@ -31,6 +30,12 @@ def cal_cossim(model, db_subgraph, x_node_ft, x_edge_idx, x_edge_ft):
 def eval(model, text_graphs, cell_graphs, cell_graph_keys, top_ks_list):
     accuracy = {}
     cos_sims_dict = {}
+
+    if config.use_candidates_extraction:
+        client = setup_db(model, cell_graphs)
+    else:
+        client = None
+
     for ttsg_i, (text_graph_scene_id,test_text_scene_graph) in tqdm(enumerate(text_graphs.items())):
         accuracy[ttsg_i] = [False] * len(top_ks_list)
         scene_name, cell_id, txt_id = text_graph_scene_id.split("_")
@@ -42,8 +47,8 @@ def eval(model, text_graphs, cell_graphs, cell_graph_keys, top_ks_list):
 
         cos_sims = []
 
-        if config.use_candidates_extraction:
-            sorted_top_k_cell_ids, x_node_ft, x_edge_idx, x_edge_ft = proceed_candidates_extraction(model, cell_graphs, query_subgraph)
+        if client is not None:
+            sorted_top_k_cell_ids, x_node_ft, x_edge_idx, x_edge_ft = proceed_candidates_extraction(model, cell_graphs, query_subgraph, client)
             for cell_graph_key in sorted_top_k_cell_ids:
                 db_subgraph = cell_graphs[cell_graph_key]
                 cos_sim = cal_cossim(model, db_subgraph, x_node_ft, x_edge_idx, x_edge_ft)

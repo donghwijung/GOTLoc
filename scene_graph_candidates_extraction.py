@@ -5,7 +5,7 @@ from torch.functional import F
 
 from pymilvus import MilvusClient
 
-def proceed_candidates_extraction(model, cell_graphs, text_graph, candidates_cnt=10):
+def setup_db(model, cell_graphs):
     client = MilvusClient("milvus_demo.db")
 
     cell_embedding_data_list = []
@@ -31,8 +31,12 @@ def proceed_candidates_extraction(model, cell_graphs, text_graph, candidates_cnt
         collection_name="demo_collection",
         dimension=list(cell_embedding_data_list[0].size())[0]
     )
+    _ = client.insert(collection_name="demo_collection", data=data)
 
-    res = client.insert(collection_name="demo_collection", data=data)
+    return client
+
+def proceed_candidates_extraction(model, cell_graphs, text_graph, client, candidates_cnt=10):
+    random_cell_graph_keys = list(cell_graphs.keys())
 
     x_node_ft, x_edge_idx, x_edge_ft = text_graph.to_pyg()
     test_text_embedding = model.TSALayers[0](torch.tensor(np.array(x_node_ft), dtype=torch.float32).to('cuda'),
