@@ -6,10 +6,11 @@ This is an implentation of *"GOTLoc: General Outdoor Text-based Localization Usi
 
 ## Prerequisite
 ### Install the vectorDB (Milvus)
-For the scene graph candidates extraction, the vectorDB is necessary.
+<!-- For the scene graph candidates extraction, the vectorDB is necessary.
 To install the vectorDB. Follow the instruction [link](https://github.com/milvus-io/milvus).
 If you can't install the vectorDB for any reasons. Skip the process and proceed the codes without candidates extraction step.
-However, skipping the extraction step makes the speed of the process much slower.
+However, skipping the extraction step makes the speed of the process much slower. -->
+The vectorDB is required for extracting scene graph candidates. To install it, follow the instructions at this [link](https://github.com/milvus-io/milvus). If you're unable to install the vectorDB for any reason, you can skip this step and continue with the code without the candidate extraction. However, skipping this step will significantly slow down the process.
 
 ## Installation
 ### Setting an environments
@@ -18,7 +19,7 @@ conda env create -f environment.yml
 conda activate GOTLoc
 ```
 ### Install the NLTK
-Install the trained pipeline for *word2vec* embeddings
+Install the trained pipeline for *word2vec* embeddings.
 ```bash
 python -m spacy download en_core_web_lg
 ```
@@ -29,24 +30,24 @@ bash setup_directories.sh
 
 ## Dataset
 ### Download
-- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) download scene graphs and model checkpoints
-- Place the downloaded datasets to the *data* directory
-- Unzip the downloaded dataset
+- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) Download scene graphs and model checkpoints.
+- Move the downloaded data to the `data` directory.
+- Unzip the downloaded data.
 
 ## Train
-You may change the arguments for the training. The arguments are defined in the `config.py`.
+You can modify the training arguments, which are specified in the `config.py` file.
 ```bash
 python train.py
 ```
 
 ## Evaluation
-To change the arguments, please refer to the `config.py`. if you didn't install vectorDB (Milvus) as described in [Install the vectorDB (Milvus)](#Install-the-vectorDB-(Milvus)), please seet this value as *False*.
+To modify the evaluation arguments, please consult the `config.py`. file. Additionally, if you have not installed vectorDB (Milvus) as outlined in [Install the vectorDB (Milvus)](#Install-the-vectorDB-(Milvus)), set this value to *False*.
 ```bash
 python eval.py
 ```
 
 ## Visualization
-To change the visualization target, please refer to the *visualization_graphs_file_name* and *visualization_graph_index* in the `config.py`.
+To modify the target scene graph for visualization, please check the *visualization_graphs_file_name* and *visualization_graph_index* in the `config.py` file.
 ```bash
 python visualize_graph.py
 ```
