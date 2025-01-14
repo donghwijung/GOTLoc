@@ -17,7 +17,7 @@ pip install spacy
 python -m spacy download en_core_web_lg
 ```
 ### Install the vectorDB (Milvus)
-The vectorDB is required for extracting scene graph candidates. To install it, follow the command below or instructions at [link](https://github.com/milvus-io/milvus). If you're unable to install the vectorDB for any reason, you can skip this step and continue with the code without the candidate extraction. However, skipping this step will significantly slow down the process.
+The vectorDB is required for extracting scene graph candidates. To install it, follow the command below or instructions at [link](https://github.com/milvus-io/milvus). If you're unable to install the vectorDB for any reason, you can skip this step and continue with the code without the candidate extraction by setting the *use_candidates_extraction* in `config.py` as *False*. However, skipping the candidates extraction step will slow down the process.
 ```bash
 pip install -U pymilvus
 ```
