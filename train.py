@@ -262,6 +262,8 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
                                batch_size=batch_size)
             if epoch % config.model_save_epoch == 0:
                 torch.save(model.state_dict(), f'{config.model_checkpoints_path}/{config.model_name}_epoch_{epoch}_checkpoint.pt')
+        return model
+    
     val_losses, accs, durations = [], [], []
     for fold, (train_idx, val_idx) in enumerate(k_fold_by_scene(dataset, folds)):
         train_dataset = [dataset[i] for i in train_idx]
