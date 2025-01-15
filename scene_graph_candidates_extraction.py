@@ -6,7 +6,7 @@ from torch.functional import F
 from pymilvus import MilvusClient
 
 def setup_db(model, cell_graphs):
-    client = MilvusClient("milvus_demo.db")
+    client = MilvusClient("GOTLoc_milvus.db")
 
     cell_embedding_data_list = []
     data = []
@@ -25,13 +25,13 @@ def setup_db(model, cell_graphs):
             "vector": cell_embedding_pooled 
         })
 
-    if client.has_collection(collection_name="demo_collection"):
-        client.drop_collection(collection_name="demo_collection")
+    if client.has_collection(collection_name="GOTLoc_collection"):
+        client.drop_collection(collection_name="GOTLoc_collection")
     client.create_collection(
-        collection_name="demo_collection",
+        collection_name="GOTLoc_collection",
         dimension=list(cell_embedding_data_list[0].size())[0]
     )
-    _ = client.insert(collection_name="demo_collection", data=data)
+    _ = client.insert(collection_name="GOTLoc_collection", data=data)
 
     return client
 
@@ -47,9 +47,9 @@ def proceed_candidates_extraction(model, cell_graphs, text_graph, client, candid
     query_vectors = [test_text_embedding_pooled.cpu().detach().numpy()]
 
     res = client.search(
-        collection_name="demo_collection",  # target collection
-        data=query_vectors,  # query vectors
-        limit=candidates_cnt,  # number of returned entities
+        collection_name="GOTLoc_collection",  # Target collection
+        data=query_vectors,  # Query vectors
+        limit=candidates_cnt,  # Number of returned entities
         search_params={
             "metric_type": "COSINE"
         }
@@ -63,7 +63,7 @@ def proceed_candidates_extraction(model, cell_graphs, text_graph, client, candid
         db_subgraph = cell_graphs[cell_id]
         p_node_ft, p_edge_idx, p_edge_ft = db_subgraph.to_pyg()
 
-        x_p, p_p, m_p = model(torch.tensor(np.array(x_node_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_node_ft), dtype=torch.float32).to('cuda'),
+        x_p, p_p, _ = model(torch.tensor(np.array(x_node_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_node_ft), dtype=torch.float32).to('cuda'),
                                     torch.tensor(x_edge_idx, dtype=torch.int64).to('cuda'), torch.tensor(p_edge_idx, dtype=torch.int64).to('cuda'),
                                     torch.tensor(np.array(x_edge_ft), dtype=torch.float32).to('cuda'), torch.tensor(np.array(p_edge_ft), dtype=torch.float32).to('cuda'))
         

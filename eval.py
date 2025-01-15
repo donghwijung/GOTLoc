@@ -2,11 +2,12 @@ import pickle
 import copy
 import random
 
+from tqdm import tqdm
+import numpy as np
+
 import torch
 import torch.cuda
 import torch.nn.functional as F
-from tqdm import tqdm
-import numpy as np
 
 import config
 from models import BigGNN

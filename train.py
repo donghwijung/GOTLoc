@@ -2,13 +2,13 @@ import pickle
 import random
 import time
 
-import torch
-import torch.cuda
-import torch.nn.functional as F
-
 from tqdm import tqdm
 import numpy as np
 import wandb
+
+import torch
+import torch.cuda
+import torch.nn.functional as F
 
 import config
 from models import BigGNN
@@ -19,7 +19,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 random.seed(42)
 
-def train(optimizer, database_3dssg, dataset, batch_size, fold):
+def train(optimizer, database_3dssg, dataset, batch_size):
     assert(type(dataset) == list)
     indices = [i for i in range(len(dataset))]
     random.shuffle(indices)
@@ -62,9 +62,9 @@ def train(optimizer, database_3dssg, dataset, batch_size, fold):
         # Cross entropy
         loss1 = cross_entropy(loss1, loss1_t, reduction='mean', dim=1)
         loss3 = cross_entropy(loss3, loss3_t, reduction='mean', dim=1)
-        if (config.loss_ablation_m): loss = loss1     # cosine similarity only
-        elif (config.loss_ablation_c): loss = loss3   # matching probability only
-        else: loss = (loss1 + loss3) / 2.0          # average of both
+        if (config.loss_ablation_m): loss = loss1     # Cosine similarity only
+        elif (config.loss_ablation_c): loss = loss3   # Matching probability only
+        else: loss = (loss1 + loss3) / 2.0          # Average of both
 
         optimizer.zero_grad()
         loss.backward()
@@ -130,9 +130,9 @@ def eval_loss(database_3dssg, dataset, fold):
             # Cross entropy
             loss1 = cross_entropy(loss1, loss1_t, reduction='mean', dim=1)
             loss3 = cross_entropy(loss3, loss3_t, reduction='mean', dim=1)
-            if (config.loss_ablation_m or config.eval_only_c): loss = loss1     # use the cosine similarity
-            elif (config.loss_ablation_c): loss = loss3   # use the matching probability only
-            else: loss = (loss1 + loss3) / 2.0          # use the average of both
+            if (config.loss_ablation_m or config.eval_only_c): loss = loss1     # Use the cosine similarity
+            elif (config.loss_ablation_c): loss = loss3   # Use the matching probability only
+            else: loss = (loss1 + loss3) / 2.0          # Use the average of both
 
             loss1_across_batches.append(loss1.item())
             loss3_across_batches.append(loss3.item())
@@ -147,7 +147,7 @@ def eval_loss(database_3dssg, dataset, fold):
     model.train()
     return torch.tensor(loss_across_batches).mean().item()
 
-def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=config.eval_iter_count, out_of=config.out_of, valid_top_k=[1, 3, 5], timer=None):
+def eval_acc(database_3dssg, dataset, eval_iter_count=config.eval_iter_count, out_of=config.out_of, valid_top_k=[1, 3, 5], timer=None):
     model.eval()
 
     # Make sure the dataset is properly sampled
@@ -156,7 +156,7 @@ def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=c
         if g.scene_id not in buckets: buckets[g.scene_id] = []
         buckets[g.scene_id].append(idx)
 
-    # out_of is basically 10
+    # Out_of is basically 10
     all_valid = {}
     for _ in range(config.eval_iters):
         valid = {k: [] for k in valid_top_k}
@@ -195,8 +195,8 @@ def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=c
                 else: true_match.append(0)
             
 
-            if (config.loss_ablation_m or config.eval_only_c):     # use the cosine similarity only
-                # sort w indices
+            if (config.loss_ablation_m or config.eval_only_c):     # Use the cosine similarity only
+                # Sort w indices
                 cos_sims = np.array(cos_sims) # [0, 2] 0 is good
                 true_match = np.array(true_match)
                 t1 = time.time()
@@ -207,8 +207,8 @@ def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=c
                     timer.text2graph_matching_iter.append(1)
                 cos_sims = cos_sims[sorted_indices]
                 true_match = true_match[sorted_indices]
-            elif (config.loss_ablation_c): # use the matching probability only
-                # sort w indices
+            elif (config.loss_ablation_c): # Use the matching probability only
+                # Sort w indices
                 match_prob = np.array(match_prob)
                 true_match = np.array(true_match)
                 t1 = time.time()
@@ -218,8 +218,8 @@ def eval_acc(database_3dssg, dataset, fold, mode='scanscribe', eval_iter_count=c
                     timer.text2graph_matching_iter.append(1)
                 match_prob = match_prob[sorted_indices]
                 true_match = true_match[sorted_indices]
-            else: # use matching probability only
-                # sort w indices
+            else: # Use matching probability only
+                # Sort w indices
                 match_prob = np.array(match_prob)
                 true_match = np.array(true_match)
                 t1 = time.time()
@@ -259,8 +259,7 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
                                optimizer=optimizer, 
                                database_3dssg=database_3dssg, 
                                dataset=dataset, 
-                               batch_size=batch_size, 
-                               fold=None)
+                               batch_size=batch_size)
             if epoch % config.model_save_epoch == 0:
                 torch.save(model.state_dict(), f'{config.model_checkpoints_path}/{config.model_name}_epoch_{epoch}_checkpoint.pt')
     val_losses, accs, durations = [], [], []
@@ -282,8 +281,7 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
                                optimizer=optimizer, 
                                database_3dssg=database_3dssg, 
                                dataset=train_dataset, 
-                               batch_size=batch_size, 
-                               fold=fold)
+                               batch_size=batch_size)
             if epoch % config.model_save_epoch == 0:
                 torch.save(model.state_dict(), f'{config.model_checkpoints_path}/{config.model_name}_epoch_{epoch}_checkpoint.pt')
             val_losses.append(eval_loss(
@@ -292,10 +290,8 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
                                         dataset=val_dataset,
                                         fold=fold))
             accs.append(eval_acc(
-                                # model=model,
                                  database_3dssg=database_3dssg, 
                                  dataset=val_dataset,
-                                 fold=fold,
                                  eval_iter_count=30,
                                  valid_top_k=config.valid_top_k))
             eval_info = {
@@ -321,7 +317,7 @@ if __name__ == '__main__':
         print("Must define a model name")
         print("Exiting...")
         exit()
-    # make sure only 1 out of 2 loss ablations is true
+    # Make sure only 1 out of 2 loss ablations is true
     if (config.loss_ablation_m and config.loss_ablation_c):
         print("Can only have one loss ablation true at a time")
         print("Exiting...")
@@ -330,7 +326,6 @@ if __name__ == '__main__':
     if config.use_wandb:
         wandb.config = {"architecture": "Graph Transformer",
                         "dataset": "OSM"}
-        # for arg in vars(args): wandb.config[arg] = getattr(args, arg)
         wandb_proj_name = f"GOTLoc"
         wandb.init(project=wandb_proj_name,
                     name=config.model_name,
@@ -369,10 +364,8 @@ if __name__ == '__main__':
     t_start = time.perf_counter()
     # Final test sets evaluation
     test_accuracy = eval_acc(
-                                        database_3dssg=cell_graphs,
-                                        dataset=list(val_text_graphs.values()),
-                                        fold=None,
-                                        mode='scanscribe_test')
+                                database_3dssg=cell_graphs,
+                                dataset=list(val_text_graphs.values()))
     t_end = time.perf_counter()
     print(f'Time elapsed in minutes: {(t_end - t_start) / 60}')
     print(f'Final test set accuracies: {test_accuracy}')

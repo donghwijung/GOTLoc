@@ -1,5 +1,5 @@
 # GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap
-[Video](), [Paper]()
+[Video](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [Paper]()
 
 ## Description
 This is an implentation of *"GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap"* which indicates a general outdoor text-based localization using scene graph retrieval with OpenStreetMap.
