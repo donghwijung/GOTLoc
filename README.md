@@ -27,8 +27,7 @@ bash setup_directories.sh
 ```
 
 ## Dataset
-### Download
-- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) Download scene graphs and model checkpoints.
+- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) scene graphs and model checkpoints.
 - Move the downloaded data to the `data` directory.
 - Unzip the downloaded data.
 
