@@ -1,8 +1,8 @@
 # GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap
-[Video](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [Paper]()
+[Video](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [Paper](https://arxiv.org/abs/2501.08575)
 
 ## Description
-This is an implentation of *"GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap"* which indicates a general outdoor text-based localization using scene graph retrieval with OpenStreetMap.
+This is an implementation of *"GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap"* which indicates a general outdoor text-based localization using scene graph retrieval with OpenStreetMap.
 
 ## Setup
 ### Setting an environments
@@ -51,6 +51,12 @@ python visualize_graph.py
 
 ## Citation
 ```
+@article{jung2025gotloc,
+  title={GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap},
+  author={Jung, Donghwi and Kim, Keonwoo and Kim, Seong-Woo},
+  journal={arXiv preprint arXiv:2501.08575},
+  year={2025}
+}
 ```
 
 ## Acknowledgements
