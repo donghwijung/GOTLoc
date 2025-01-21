@@ -36,7 +36,7 @@ eval_iters = 30
 eval_iter_count = 10
 out_of = 10
 
-use_wandb = True ## Whether to use the wandb or not during training
+use_wandb = False ## Whether to use the wandb or not during training
 
 # Evaluation
 result_save_epoch = 50
