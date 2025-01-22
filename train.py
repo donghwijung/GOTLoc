@@ -28,6 +28,7 @@ def train(optimizer, database_3dssg, dataset, batch_size):
     assert(len(batched_indices[0]) == batch_size)
     skipped = 0
     total = 0
+    loss_cnt = 0
     for batch in tqdm(batched_indices):
         loss1 = torch.zeros((len(batch), len(batch))).to('cuda')
         loss3 = torch.zeros((len(batch), len(batch))).to('cuda')
@@ -71,7 +72,8 @@ def train(optimizer, database_3dssg, dataset, batch_size):
         optimizer.step()
 
         train_loss += loss.item()
-    print(f'Skipped {skipped} graphs out of {total} because one of the subgraphs had too few edges')
+        loss_cnt += 1
+    train_loss /= loss_cnt
     return train_loss, loss1.item(), loss3.item()
 
 def eval_loss(database_3dssg, dataset, fold):
@@ -89,7 +91,6 @@ def eval_loss(database_3dssg, dataset, fold):
         random.shuffle(indices)
         batched_indices = [indices[i:i+config.batch_size] for i in range(0, len(indices) - config.batch_size, config.batch_size)]
         assert(len(batched_indices[0]) == config.batch_size)
-        print(f'number of batches in evaluation: {len(batched_indices)}')
         skipped = 0
         total = 0
         for batch in batched_indices:
@@ -142,8 +143,6 @@ def eval_loss(database_3dssg, dataset, fold):
             avg_cos_sim_p_across_batches.append(avg_cos_sim_p.item())
             avg_cos_sim_n_across_batches.append(avg_cos_sim_n.item())
 
-        print(f'During evaluation fold {fold} skipped {skipped} graphs out of {total} because one of the subgraphs had too few edges')
-        print(f'Loss across batches was {np.mean(loss_across_batches)}')
     model.train()
     return torch.tensor(loss_across_batches).mean().item()
 
@@ -240,8 +239,8 @@ def eval_acc(database_3dssg, dataset, eval_iter_count=config.eval_iter_count, ou
             if k not in all_valid: all_valid[k] = []
             all_valid[k].append(np.mean(valid[k]))
 
-    accuracy = {k: (np.mean(all_valid[k]), np.std(all_valid[k])) for k in valid_top_k}
-    print(f'accuracies: {accuracy}')
+    accuracy = {k: np.mean(all_valid[k]) for k in valid_top_k}
+    print(f'Accuracies: {accuracy}')
     model.train()
     
     return accuracy
@@ -269,9 +268,6 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
         train_dataset = [dataset[i] for i in train_idx]
         val_dataset = [dataset[i] for i in val_idx]
 
-        print(f'length of training set in fold {fold}: {len(train_dataset)}')
-        print(f'length of validation set in fold {fold}: {len(val_dataset)}')
-
         optimizer = torch.optim.Adam(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
 
         starting_epoch = 1
@@ -279,7 +275,7 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
             starting_epoch = config.continue_training
         epochs = epochs + starting_epoch
         for epoch in tqdm(range(starting_epoch, epochs)):
-            train_loss, loss1, loss3 = train(
+            train_loss, _, _ = train(
                                optimizer=optimizer, 
                                database_3dssg=database_3dssg, 
                                dataset=train_dataset, 
@@ -296,7 +292,6 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
                                  eval_iter_count=30,
                                  valid_top_k=config.valid_top_k))
             eval_info = {
-                'fold': fold,
                 'epoch': epoch,
                 'train_loss': train_loss,
                 'val_loss': val_losses[-1],
@@ -306,8 +301,6 @@ def train_with_cross_val(dataset, database_3dssg, folds, epochs, batch_size, ent
 
             if config.use_wandb:
                 wandb.log({
-                    'loss1': loss1,
-                    'loss3': loss3,
                     'train_loss': train_loss,
                     'val_loss': val_losses[-1],
                 })

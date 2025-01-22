@@ -1,8 +1,17 @@
 # GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap
-[Video](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [Paper](https://arxiv.org/abs/2501.08575)
+[[Video]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper]](https://arxiv.org/abs/2501.08575)
 
-## Description
-This is an implementation of *"GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap"* which indicates a general outdoor text-based localization using scene graph retrieval with OpenStreetMap.
+[Donghwi Jung](https://donghwijung.github.io/), [Keonwoo Kim](https://www.notion.so/Keonwoo-Kim-743fdb8532e34542bca4172790183849?pvs=4), [Seong-Woo Kim](https://arisnu.squarespace.com/director)
+
+We introduce GOTLoc (General Outdoor Text-based Localization), a localization approach that employs scene graphs to minimize storage requirements and utilizes candidate extraction to enhance processing speed. By utilizing OpenStreetMap data, GOTLoc facilitates efficient outdoor text-based localization without the need for pre-generated maps, ensuring high accuracy and real-time performance for robotic systems.
+<p align="center">
+  <img src="./images/banner.png">
+</p>
+
+## System Overview
+<p align="center">
+  <img src="./images/process.png">
+</p>
 
 ## Setup
 ### Setting an environments
@@ -22,29 +31,30 @@ The vectorDB is required for extracting scene graph candidates. To install it, f
 pip install -U pymilvus
 ```
 ### Setup directories
+Create `data` related directories for running the code.
 ```bash
 bash setup_directories.sh
 ```
 
 ## Dataset
-- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) scene graphs and model checkpoints.
+- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) scene graphs and model checkpoints. The scene graphs and model checkpoints were created using GPS coordinates derived from the UTM coordinates of the KITTI360Pose dataset.
 - Move the downloaded data to the `data` directory.
 - Unzip the downloaded data.
 
 ## Train
-To modify the training arguments, please the `config.py` file.
+To modify the training arguments, refer to the `config.py` file.
 ```bash
 python train.py
 ```
 
 ## Evaluation
-To modify the evaluation arguments, please consult the `config.py`. file. Additionally, if you have not installed vectorDB (Milvus) as outlined in [Install the vectorDB (Milvus)](#install-the-vectordb-milvus), set this value to *False*.
+To modify the evaluation arguments, consult the `config.py` file. Additionally, if you have not installed vectorDB (Milvus) as outlined in [Install the vectorDB (Milvus)](#install-the-vectordb-milvus), set this value to *False*.
 ```bash
 python eval.py
 ```
 
 ## Visualization
-To modify the target scene graph for visualization, please check the *visualization_graphs_file_name* and *visualization_graph_index* in the `config.py` file.
+To modify the target scene graph for visualization, check the *visualization_graphs_file_name* and *visualization_graph_index* in the `config.py` file.
 ```bash
 python visualize_graph.py
 ```
@@ -60,7 +70,7 @@ python visualize_graph.py
 ```
 
 ## Acknowledgements
-The codes and datasets in this repository are based on [Where am I?](https://github.com/jiaqchen/whereami-text2sgm), [Milvus](https://github.com/milvus-io/milvus), and [Text2Pos](https://github.com/mako443/Text2Pos-CVPR2022). Thanks to the authors of these codes and datasets.
+The codes and datasets in this repository are based on [Where am I?](https://github.com/jiaqchen/whereami-text2sgm), [Milvus](https://github.com/milvus-io/milvus), and [Text2Pos](https://github.com/mako443/Text2Pos-CVPR2022).
 
 ## License
 

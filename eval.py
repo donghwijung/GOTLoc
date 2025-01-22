@@ -128,7 +128,7 @@ if __name__ == '__main__':
                 recalls[acc_i] += 1
     recalls = np.array(recalls, dtype=float)
     recalls /= len(accuracy)
-    print("val recalls", recalls.tolist())
+    print("Val recalls", recalls.tolist())
 
     with open(f"{config.scene_graphs_path}/{config.test_text_graphs_file_name}", "rb") as f:
         test_text_graphs = pickle.load(f)
@@ -152,4 +152,4 @@ if __name__ == '__main__':
                 recalls[acc_i] += 1
     recalls = np.array(recalls, dtype=float)
     recalls /= len(accuracy)
-    print("test recalls", recalls.tolist())
+    print("Test recalls", recalls.tolist())
