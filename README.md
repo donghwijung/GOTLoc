@@ -1,5 +1,5 @@
 # GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap
-[[Video]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper]](https://arxiv.org/abs/2501.08575)
+#### [[Video 📺]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper 📖]](https://arxiv.org/abs/2501.08575)
 
 [Donghwi Jung](https://donghwijung.github.io/), [Keonwoo Kim](https://www.notion.so/Keonwoo-Kim-743fdb8532e34542bca4172790183849?pvs=4), [Seong-Woo Kim](https://arisnu.squarespace.com/director)
 
