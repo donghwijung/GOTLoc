@@ -41,7 +41,3 @@ use_wandb = False ## Whether to use the wandb or not during training
 # Evaluation
 result_save_epoch = 50
 use_candidates_extraction = True ## Please set this value as False, if you didn't install vectorDB (Milvus).
-
-# Visualization
-visualization_graphs_file_name = cell_graphs_file_name
-visualization_graph_index = 0
