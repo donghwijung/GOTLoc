@@ -1,16 +1,11 @@
-# GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap
-#### [[Video 📺]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper 📖]](https://arxiv.org/abs/2501.08575)
+# GOTLoc: General Outdoor Text-based Coarse Localization Using Scene Graph Retrieval with OpenStreetMap
+#### [[Project 🗃️]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Video 📺]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper 📖]](https://arxiv.org/abs/2501.08575)
 
 [Donghwi Jung](https://donghwijung.github.io/), [Keonwoo Kim](https://www.notion.so/Keonwoo-Kim-743fdb8532e34542bca4172790183849?pvs=4), [Seong-Woo Kim](https://arisnu.squarespace.com/director)
 
-We introduce GOTLoc (General Outdoor Text-based Localization), a localization approach that employs scene graphs to minimize storage requirements and utilizes candidate extraction to enhance processing speed. By utilizing OpenStreetMap data, GOTLoc facilitates efficient outdoor text-based localization without the need for pre-generated maps, ensuring high accuracy and real-time performance for robotic systems.
+We introduce GOTLoc, a coarse localization approach that employs scene graphs to minimize storage requirements and utilizes candidate extraction to enhance processing speed. By utilizing OpenStreetMap data, GOTLoc facilitates efficient outdoor text-based coarse localization without the need for pre-generated maps, ensuring high accuracy and real-time performance for robotic systems.
 <p align="center">
-  <img src="./images/banner.png">
-</p>
-
-## System Overview
-<p align="center">
-  <img src="./images/process.png">
+  <img src="./images/process.jpg">
 </p>
 
 ## Setup
@@ -37,7 +32,7 @@ bash setup_directories.sh
 ```
 
 ## Dataset
-- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) scene graphs and model checkpoints. The scene graphs and model checkpoints were created using GPS coordinates derived from the UTM coordinates of the KITTI360Pose dataset.
+- [Download](https://drive.google.com/drive/folders/1oLksAHJl-AUjUM-LIVP5e3i9wMGqhxyl?usp=sharing) scene graphs and model checkpoints. The scene graphs and model checkpoints were created using GPS coordinates derived from the East-North-Up (ENU) coordinates of the KITTI360Pose dataset.
 - Move the downloaded data to the `data` directory.
 - Unzip the downloaded data.
 
