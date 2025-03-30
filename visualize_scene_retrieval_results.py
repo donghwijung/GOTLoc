@@ -106,7 +106,7 @@ if __name__ == "__main__":
     text_scene_graph_dict = {text_scene_graph_key: text_scene_graph}
 
     model_name = config.model_name
-    model_state_dict = torch.load(f'{config.model_checkpoints_path}/{model_name}.pt')
+    model_state_dict = torch.load(f'{config.model_checkpoints_path}/{model_name}.pt', weights_only=True)
     model = BigGNN(config.N, config.heads).to('cuda')
     model.load_state_dict(model_state_dict)
 

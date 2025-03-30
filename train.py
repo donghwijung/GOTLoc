@@ -338,7 +338,7 @@ if __name__ == '__main__':
 
     if config.continue_training: 
         model = BigGNN(config.N, config.heads).to('cuda')
-        model_dict = torch.load(f'{config.model_checkpoints_path}/{config.continue_training_model}.pt')
+        model_dict = torch.load(f'{config.model_checkpoints_path}/{config.continue_training_model}.pt', weights_only=True)
         model.load_state_dict(model_dict)
     else: model = BigGNN(config.N, config.heads).to('cuda')
     optimizer = torch.optim.Adam(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)

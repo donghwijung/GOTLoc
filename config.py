@@ -3,10 +3,10 @@ data_path = "./data"
 scene_graphs_path = f"{data_path}/scene_graphs"
 model_checkpoints_path = f"{data_path}/model_checkpoints"
 
-cell_graphs_file_name = "osm_cell_graphs_5225.pkl"
-train_text_graphs_file_name = "osm_train_text_graphs_20648.pkl"
-val_text_graphs_file_name = "osm_val_text_graphs_2671.pkl"
-test_text_graphs_file_name = "osm_test_text_graphs_9205.pkl"
+cell_graphs_file_name = "osm_cell_graphs_2052.pkl"
+train_text_graphs_file_name = "osm_train_text_graphs_6578.pkl"
+val_text_graphs_file_name = "osm_val_text_graphs_1519.pkl"
+test_text_graphs_file_name = "osm_test_text_graphs_2625.pkl"
 
 model_name = "model_osm" ## The name of the model checkpoints
 top_ks_list = [1,3,5]
