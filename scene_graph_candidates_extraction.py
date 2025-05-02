@@ -6,7 +6,7 @@ from torch.functional import F
 from pymilvus import MilvusClient
 
 def setup_db(model, cell_graphs):
-    client = MilvusClient("GOTLoc_milvus.db")
+    client = MilvusClient("GOTPR_milvus.db")
 
     cell_embedding_data_list = []
     data = []
@@ -25,13 +25,13 @@ def setup_db(model, cell_graphs):
             "vector": cell_embedding_pooled 
         })
 
-    if client.has_collection(collection_name="GOTLoc_collection"):
-        client.drop_collection(collection_name="GOTLoc_collection")
+    if client.has_collection(collection_name="GOTPR_collection"):
+        client.drop_collection(collection_name="GOTPR_collection")
     client.create_collection(
-        collection_name="GOTLoc_collection",
+        collection_name="GOTPR_collection",
         dimension=list(cell_embedding_data_list[0].size())[0]
     )
-    _ = client.insert(collection_name="GOTLoc_collection", data=data)
+    _ = client.insert(collection_name="GOTPR_collection", data=data)
 
     return client
 
@@ -47,7 +47,7 @@ def proceed_candidates_extraction(model, cell_graphs, text_graph, client, candid
     query_vectors = [test_text_embedding_pooled.cpu().detach().numpy()]
 
     res = client.search(
-        collection_name="GOTLoc_collection",  # Target collection
+        collection_name="GOTPR_collection",  # Target collection
         data=query_vectors,  # Query vectors
         limit=candidates_cnt,  # Number of returned entities
         search_params={

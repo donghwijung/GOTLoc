@@ -1,9 +1,9 @@
-# GOTLoc: General Outdoor Text-based Coarse Localization Using Scene Graph Retrieval with OpenStreetMap
-#### [[Project 🗃️]](https://donghwijung.github.io/GOTLoc_page/), [[Video 📺]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper 📖]](https://arxiv.org/abs/2501.08575)
+# GOTPR: General Outdoor Text-based Place Recognition Using Scene Graph Retrieval with OpenStreetMap
+#### [[Project 🗃️]](https://donghwijung.github.io/GOTPR_page/), [[Video 📺]](https://youtu.be/59K14A1NqNw?si=orx-xycsKZd6-zuC), [[Paper 📖]](https://arxiv.org/abs/2501.08575)
 
 [Donghwi Jung](https://donghwijung.github.io/), [Keonwoo Kim](https://www.notion.so/Keonwoo-Kim-743fdb8532e34542bca4172790183849?pvs=4), [Seong-Woo Kim](https://arisnu.squarespace.com/director)
 
-We introduce GOTLoc, a coarse localization approach that employs scene graphs to minimize storage requirements and utilizes candidate extraction to enhance processing speed. By utilizing OpenStreetMap data, GOTLoc facilitates efficient outdoor text-based coarse localization without the need for pre-generated maps, ensuring high accuracy and real-time performance for robotic systems.
+We introduce GOTPR, a place recognition approach that employs scene graphs to minimize storage requirements and utilizes candidate extraction to enhance processing speed. By utilizing OpenStreetMap data, GOTPR facilitates efficient outdoor text-based place recognition without the need for pre-generated maps, ensuring high accuracy and real-time performance for robotic systems.
 <p align="center">
   <img src="./images/process.jpg">
 </p>
@@ -12,7 +12,7 @@ We introduce GOTLoc, a coarse localization approach that employs scene graphs to
 ### Setting an environments
 ```bash
 conda env create -f environment.yml
-conda activate GOTLoc
+conda activate GOTPR
 ```
 ### Install the NLTK
 Install the trained pipeline for *word2vec* embeddings.

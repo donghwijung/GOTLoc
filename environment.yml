@@ -1,4 +1,4 @@
-name: GOTLoc
+name: GOTPR
 channels:
   - defaults
 dependencies:
@@ -132,4 +132,3 @@ dependencies:
       - weasel==0.4.1
       - wrapt==1.17.0
       - yarl==1.18.3
-prefix: /home/donghwijung/anaconda3/envs/GOTLoc

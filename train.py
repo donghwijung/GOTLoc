@@ -320,7 +320,7 @@ if __name__ == '__main__':
     if config.use_wandb:
         wandb.config = {"architecture": "Graph Transformer",
                         "dataset": "OSM"}
-        wandb_proj_name = f"GOTLoc"
+        wandb_proj_name = f"GOTPR"
         wandb.init(project=wandb_proj_name,
                     name=config.model_name,
                     mode="online",
