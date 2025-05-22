@@ -57,11 +57,12 @@ python visualize_scene_retrieval_results.py --visualization_graph_index <text_gr
 
 ## Citation
 ```
-@article{jung2025gotloc,
-  title={GOTLoc: General Outdoor Text-based Localization Using Scene Graph Retrieval with OpenStreetMap},
+@article{jung2025gotpr,
+  title={GOTPR: General Outdoor Text-based Place Recognition Using Scene Graph Retrieval with OpenStreetMap},
   author={Jung, Donghwi and Kim, Keonwoo and Kim, Seong-Woo},
-  journal={arXiv preprint arXiv:2501.08575},
-  year={2025}
+  journal={IEEE Robotics and Automation Letters},
+  year={2025},
+  publisher={IEEE}
 }
 ```
 
